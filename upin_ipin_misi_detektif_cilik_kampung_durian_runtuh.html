@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upin & Ipin: Misi Detektif Cilik – Kampung Durian Runtuh</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Fredoka (kartun 3D ceria) & Nunito (mudah dibaca murid Tahun 4) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       GAYA 3D CARTOON CLAYMORPHISM & TOY-BOX UI
+       ========================================================================== */
+    :root {
+      --sky-top: #0284c7;
+      --sky-mid: #38bdf8;
+      --sky-bottom: #bae6fd;
+      --cream-card: #fffbeb;
+      --cream-inner: #fefce8;
+      --yellow-main: #facc15;
+      --yellow-dark: #ca8a04;
+      --blue-main: #0ea5e9;
+      --blue-dark: #0369a1;
+      --green-main: #22c55e;
+      --green-dark: #15803d;
+      --red-main: #ef4444;
+      --red-dark: #b91c1c;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: linear-gradient(180deg, #0284c7 0%, #38bdf8 38%, #bae6fd 70%, #86efac 70%, #22c55e 100%);
+      color: #1e293b;
+      position: relative;
+    }
+
+    h1, h2, h3, .font-cartoon {
+      font-family: 'Fredoka', sans-serif;
+      letter-spacing: 0.02em;
+    }
+
+    /* Latar Belakang Kampung Durian Runtuh (Awan & Bukit 3D) */
+    .scenery-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    @keyframes floatCloud {
+      0% { transform: translateX(-120px); }
+      100% { transform: translateX(calc(100vw + 160px)); }
+    }
+
+    .cloud-3d {
+      position: absolute;
+      background: linear-gradient(180deg, #ffffff 60%, #e0f2fe 100%);
+      border-radius: 9999px;
+      box-shadow: 0 10px 20px rgba(2, 132, 199, 0.2), inset 0 -6px 10px rgba(186, 230, 253, 0.8);
+      animation: floatCloud linear infinite;
+    }
+
+    /* Kad 3D Claymorphism */
+    .card-3d {
+      background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%);
+      border: 4px solid #ffffff;
+      border-radius: 2rem;
+      box-shadow:
+        0 14px 0 #cbd5e1,
+        0 22px 35px rgba(15, 23, 42, 0.18),
+        inset 0 4px 8px rgba(255, 255, 255, 0.9);
+      position: relative;
+    }
+
+    .card-3d-blue {
+      background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 4px solid #ffffff;
+      border-radius: 2rem;
+      box-shadow:
+        0 14px 0 #0284c7,
+        0 24px 36px rgba(2, 132, 199, 0.28),
+        inset 0 4px 10px rgba(255, 255, 255, 0.95);
+    }
+
+    .card-3d-yellow {
+      background: linear-gradient(180deg, #fefce8 0%, #fef08a 100%);
+      border: 4px solid #ffffff;
+      border-radius: 2rem;
+      box-shadow:
+        0 14px 0 #eab308,
+        0 24px 36px rgba(202, 138, 4, 0.25),
+        inset 0 4px 10px rgba(255, 255, 255, 0.95);
+    }
+
+    .card-3d-green {
+      background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
+      border: 4px solid #ffffff;
+      border-radius: 2rem;
+      box-shadow:
+        0 14px 0 #16a34a,
+        0 24px 36px rgba(22, 163, 74, 0.25),
+        inset 0 4px 10px rgba(255, 255, 255, 0.95);
+    }
+
+    /* Butang 3D Fizikal */
+    .btn-3d {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      border-radius: 1.25rem;
+      border: 3px solid rgba(255, 255, 255, 0.85);
+      transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.12s ease, filter 0.15s ease;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-3d::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 10%;
+      width: 80%;
+      height: 32%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 100%);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .btn-3d:hover:not(:disabled) {
+      transform: translateY(-2px);
+      filter: brightness(1.04);
+    }
+
+    .btn-3d:active:not(:disabled) {
+      transform: translateY(5px);
+    }
+
+    .btn-3d:disabled {
+      opacity: 0.48;
+      cursor: not-allowed;
+      transform: translateY(3px);
+      filter: grayscale(0.35);
+    }
+
+    .btn-yellow {
+      background: linear-gradient(180deg, #fde047 0%, #facc15 100%);
+      color: #713f12;
+      box-shadow: 0 7px 0 #ca8a04, 0 12px 20px rgba(202, 138, 4, 0.3);
+    }
+    .btn-yellow:active:not(:disabled) {
+      box-shadow: 0 2px 0 #ca8a04, 0 5px 10px rgba(202, 138, 4, 0.3);
+    }
+
+    .btn-blue {
+      background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+      color: #ffffff;
+      box-shadow: 0 7px 0 #0369a1, 0 12px 20px rgba(3, 105, 161, 0.32);
+    }
+    .btn-blue:active:not(:disabled) {
+      box-shadow: 0 2px 0 #0369a1, 0 5px 10px rgba(3, 105, 161, 0.32);
+    }
+
+    .btn-green {
+      background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%);
+      color: #ffffff;
+      box-shadow: 0 7px 0 #15803d, 0 12px 20px rgba(21, 128, 61, 0.32);
+    }
+    .btn-green:active:not(:disabled) {
+      box-shadow: 0 2px 0 #15803d, 0 5px 10px rgba(21, 128, 61, 0.32);
+    }
+
+    .btn-red {
+      background: linear-gradient(180deg, #f87171 0%, #dc2626 100%);
+      color: #ffffff;
+      box-shadow: 0 7px 0 #991b1b, 0 12px 20px rgba(153, 27, 27, 0.32);
+    }
+    .btn-red:active:not(:disabled) {
+      box-shadow: 0 2px 0 #991b1b, 0 5px 10px rgba(153, 27, 27, 0.32);
+    }
+
+    .btn-orange {
+      background: linear-gradient(180deg, #fb923c 0%, #ea580c 100%);
+      color: #ffffff;
+      box-shadow: 0 7px 0 #9a3412, 0 12px 20px rgba(154, 52, 18, 0.32);
+    }
+    .btn-orange:active:not(:disabled) {
+      box-shadow: 0 2px 0 #9a3412, 0 5px 10px rgba(154, 52, 18, 0.32);
+    }
+
+    /* Animasi Karakter & Studio */
+    @keyframes characterBounce {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(1.5deg); }
+    }
+    @keyframes characterBounceAlt {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(-1.5deg); }
+    }
+    @keyframes celebrateJump {
+      0%, 100% { transform: translateY(0) scale(1); }
+      40% { transform: translateY(-18px) scale(1.06); }
+      70% { transform: translateY(-4px) scale(0.98); }
+    }
+    @keyframes pulseMicGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.65), 0 12px 25px rgba(220, 38, 38, 0.4); }
+      50% { box-shadow: 0 0 0 18px rgba(239, 68, 68, 0), 0 12px 30px rgba(220, 38, 38, 0.6); }
+    }
+    @keyframes speakerThump {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.07); }
+    }
+    @keyframes sparkleSpin {
+      0% { transform: scale(0.8) rotate(0deg); opacity: 0.7; }
+      50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+      100% { transform: scale(0.8) rotate(360deg); opacity: 0.7; }
+    }
+
+    .anim-upin { animation: characterBounce 3.2s ease-in-out infinite; }
+    .anim-ipin { animation: characterBounceAlt 3.5s ease-in-out infinite; }
+    .anim-celebrate { animation: celebrateJump 0.9s ease-in-out infinite; }
+    .mic-recording-ring { animation: pulseMicGlow 1.4s infinite; }
+    .speaker-active { animation: speakerThump 0.55s ease-in-out infinite; }
+    .sparkle-star { animation: sparkleSpin 3s linear infinite; }
+
+    /* Buih Dialog Kartun */
+    .speech-bubble {
+      background: #ffffff;
+      border: 4px solid #38bdf8;
+      border-radius: 1.5rem;
+      box-shadow: 0 8px 0 #bae6fd, 0 12px 20px rgba(2, 132, 199, 0.15);
+      position: relative;
+    }
+
+    /* Kotak Cerpen */
+    .story-paper {
+      background: #fffdf5;
+      background-image: radial-gradient(#fde68a 1px, transparent 1px);
+      background-size: 24px 24px;
+      border: 4px solid #fcd34d;
+      border-radius: 1.5rem;
+      box-shadow: inset 0 4px 12px rgba(217, 119, 6, 0.08);
+    }
+
+    /* Konsol Studio 3D */
+    .studio-console {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border: 5px solid #38bdf8;
+      border-radius: 2rem;
+      box-shadow:
+        0 14px 0 #0369a1,
+        0 25px 40px rgba(15, 23, 42, 0.35),
+        inset 0 2px 12px rgba(56, 189, 248, 0.35);
+    }
+
+    /* Pelaras Kelantangan Tersuai */
+    input[type="range"].volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 10px;
+      background: #bae6fd;
+      border-radius: 999px;
+      border: 2px solid #ffffff;
+      outline: none;
+    }
+    input[type="range"].volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #facc15;
+      border: 3px solid #ffffff;
+      box-shadow: 0 3px 0 #ca8a04;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="pb-16">
+
+  <!-- ==========================================================================
+       LATAR BELAKANG 3D KAMPUNG DURIAN RUNTUH (SVG + AWAN TERAPUNG)
+       ========================================================================== -->
+  <div class="scenery-layer" aria-hidden="true">
+    <!-- Awan 3D -->
+    <div class="cloud-3d w-36 h-12 top-8 left-4" style="animation-duration: 48s;"></div>
+    <div class="cloud-3d w-48 h-14 top-20 left-1/3" style="animation-duration: 62s; animation-delay: -15s;"></div>
+    <div class="cloud-3d w-32 h-10 top-12 right-12" style="animation-duration: 54s; animation-delay: -28s;"></div>
+
+    <!-- Pemandangan Bukit & Rumah Kampung Durian Runtuh di bahagian bawah -->
+    <svg class="fixed bottom-0 left-0 w-full h-64 md:h-80 object-cover" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="hillBack" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4ade80"/>
+          <stop offset="100%" stop-color="#16a34a"/>
+        </linearGradient>
+        <linearGradient id="hillFront" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#86efac"/>
+          <stop offset="100%" stop-color="#22c55e"/>
+        </linearGradient>
+      </defs>
+      <!-- Bukit belakang -->
+      <path fill="url(#hillBack)" d="M0,160 C320,80 540,220 880,130 C1140,60 1320,150 1440,120 L1440,320 L0,320 Z"/>
+      <!-- Bukit hadapan -->
+      <path fill="url(#hillFront)" d="M0,210 C280,260 620,140 980,220 C1200,265 1350,190 1440,210 L1440,320 L0,320 Z"/>
+
+      <!-- Pokok Durian Kiri -->
+      <g transform="translate(85, 110)">
+        <rect x="24" y="55" width="16" height="55" rx="6" fill="#92400e"/>
+        <circle cx="32" cy="40" r="34" fill="#15803d"/>
+        <circle cx="16" cy="48" r="24" fill="#22c55e"/>
+        <circle cx="48" cy="48" r="24" fill="#16a34a"/>
+        <!-- Buah Durian Comel -->
+        <ellipse cx="22" cy="66" rx="7" ry="9" fill="#a3e635" stroke="#4d7c0f" stroke-width="2"/>
+        <ellipse cx="44" cy="64" rx="7" ry="9" fill="#a3e635" stroke="#4d7c0f" stroke-width="2"/>
+      </g>
+
+      <!-- Rumah Kayu Tradisional Kampung Durian Runtuh (Kanan) -->
+      <g transform="translate(1160, 125)">
+        <!-- Tiang rumah -->
+        <rect x="22" y="75" width="8" height="32" fill="#78350f"/>
+        <rect x="90" y="75" width="8" height="32" fill="#78350f"/>
+        <!-- Dinding rumah -->
+        <rect x="15" y="38" width="90" height="42" rx="4" fill="#fef3c7" stroke="#b45309" stroke-width="3"/>
+        <!-- Tingkap -->
+        <rect x="30" y="48" width="18" height="20" rx="2" fill="#38bdf8" stroke="#92400e" stroke-width="2"/>
+        <rect x="72" y="48" width="18" height="20" rx="2" fill="#38bdf8" stroke="#92400e" stroke-width="2"/>
+        <!-- Bumbung -->
+        <polygon points="5,40 60,8 115,40" fill="#dc2626" stroke="#991b1b" stroke-width="3"/>
+        <!-- Tangga -->
+        <rect x="52" y="78" width="16" height="28" fill="#b45309"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ==========================================================================
+       KONTAINER UTAMA SATU HALAMAN (SINGLE-PAGE ADVENTURE)
+       ========================================================================== -->
+  <main class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-4 sm:pt-6 space-y-8">
+
+    <!-- BAR KAWALAN AUDIO & STATUS LENCANA (ATAS) -->
+    <div class="flex flex-wrap items-center justify-between gap-3 bg-white/90 backdrop-blur-md border-4 border-white rounded-3xl px-4 py-3 shadow-lg">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-yellow-400 text-yellow-950 font-cartoon font-bold text-xl shadow-sm">
+          🔎
+        </span>
+        <div>
+          <p class="font-cartoon font-bold text-sky-900 text-sm sm:text-base leading-tight">BAHASA MELAYU TAHUN 4</p>
+          <p class="text-xs font-bold text-emerald-700">Kampung Durian Runtuh • Misi Membaca</p>
+        </div>
+      </div>
+
+      <!-- Lencana Mini apabila murid selesai -->
+      <div id="miniBadgeHeader" class="hidden items-center gap-2 bg-gradient-to-r from-amber-300 to-yellow-400 border-2 border-white px-3 py-1.5 rounded-full shadow-md">
+        <span class="text-lg">🏅</span>
+        <span class="font-cartoon font-bold text-xs sm:text-sm text-amber-950">DETEKTIF SUARA HEBAT</span>
+      </div>
+
+      <!-- Kawalan Muzik Latar ON/OFF & Kelantangan -->
+      <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+        <button id="btnToggleMusic" type="button" class="btn-3d btn-yellow px-3.5 py-2 text-xs sm:text-sm">
+          <span id="musicIcon">🎵</span>
+          <span id="musicLabel">Muzik: OFF</span>
+        </button>
+        <div class="flex items-center gap-2 bg-sky-100 px-3 py-1.5 rounded-2xl border-2 border-white">
+          <span class="text-sm" aria-hidden="true">🔊</span>
+          <label for="volumeSlider" class="sr-only">Kelantangan Muzik</label>
+          <input id="volumeSlider" type="range" min="0" max="100" value="45" class="volume-slider w-20 sm:w-24" title="Kelantangan Muzik Latar">
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+         1. HEADER – MISI DETEKTIF CILIK
+         ======================================================================== -->
+    <header class="card-3d-blue p-5 sm:p-8 overflow-hidden">
+      <!-- Hiasan Bintang 3D -->
+      <div class="absolute top-3 right-5 text-2xl sparkle-star select-none" aria-hidden="true">✨</div>
+      <div class="absolute bottom-3 left-5 text-xl sparkle-star select-none" style="animation-delay: 1.2s;" aria-hidden="true">⭐</div>
+
+      <div class="text-center mb-6">
+        <div class="inline-block bg-yellow-400 border-3 border-white text-yellow-950 font-cartoon font-bold text-xs sm:text-sm px-4 py-1 rounded-full shadow-sm mb-2">
+          🌟 PERMAINAN INTERAKTIF DETEKTIF SUARA 🌟
+        </div>
+        <h1 class="font-cartoon text-3xl sm:text-5xl font-bold text-sky-950 drop-shadow-sm">
+          🔎 MISI DETEKTIF CILIK
+        </h1>
+        <p class="font-cartoon text-lg sm:text-2xl font-bold text-amber-600 mt-1">
+          Fail Rahsia: Misteri Kampung Durian Runtuh
+        </p>
+      </div>
+
+      <!-- Watak Upin & Ipin Detektif + Buih Dialog -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+        <!-- Ilustrasi SVG 3D Upin & Ipin memegang kanta pembesar -->
+        <div class="lg:col-span-5 flex justify-center items-end gap-2 sm:gap-4">
+          <!-- WATAK UPIN (Baju Kuning 'U', Sehelai Rambut, Topi Detektif & Kanta Pembesar) -->
+          <div class="anim-upin flex flex-col items-center">
+            <svg class="w-32 h-40 sm:w-36 sm:h-44 drop-shadow-lg" viewBox="0 0 160 200" aria-label="Upin Detektif">
+              <defs>
+                <radialGradient id="skinGrad1" cx="40%" cy="35%" r="65%">
+                  <stop offset="0%" stop-color="#fde68a"/>
+                  <stop offset="65%" stop-color="#f6c28b"/>
+                  <stop offset="100%" stop-color="#d99b66"/>
+                </radialGradient>
+                <linearGradient id="upinShirt" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#fef08a"/>
+                  <stop offset="100%" stop-color="#eab308"/>
+                </linearGradient>
+              </defs>
+              <!-- Badan & Baju Kuning -->
+              <rect x="46" y="112" width="68" height="62" rx="22" fill="url(#upinShirt)" stroke="#ca8a04" stroke-width="3"/>
+              <!-- Huruf U -->
+              <text x="80" y="150" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="26" fill="#0284c7">U</text>
+              <!-- Seluar Biru -->
+              <path d="M50,165 L110,165 L106,188 L85,188 L80,175 L75,188 L54,188 Z" fill="#0284c7"/>
+              <!-- Kepala 3D -->
+              <circle cx="80" cy="74" r="42" fill="url(#skinGrad1)" stroke="#d99b66" stroke-width="2.5"/>
+              <!-- Sehelai Rambut Ikonik Upin -->
+              <path d="M80,32 C76,16 90,12 85,28" fill="none" stroke="#1e293b" stroke-width="4" stroke-linecap="round"/>
+              <!-- Topi Detektif Coklat -->
+              <ellipse cx="80" cy="40" rx="44" ry="10" fill="#92400e"/>
+              <path d="M46,40 C48,18 112,18 114,40 Z" fill="#b45309" stroke="#78350f" stroke-width="2"/>
+              <rect x="47" y="34" width="66" height="6" rx="3" fill="#facc15"/>
+              <!-- Mata Ekspresif -->
+              <ellipse cx="65" cy="72" rx="8" ry="9" fill="#ffffff"/>
+              <circle cx="67" cy="72" r="4.5" fill="#1e293b"/>
+              <circle cx="68.5" cy="70" r="1.8" fill="#ffffff"/>
+              <ellipse cx="95" cy="72" rx="8" ry="9" fill="#ffffff"/>
+              <circle cx="93" cy="72" r="4.5" fill="#1e293b"/>
+              <circle cx="94.5" cy="70" r="1.8" fill="#ffffff"/>
+              <!-- Kening & Senyuman Ceria -->
+              <path d="M56,60 Q65,55 73,60" fill="none" stroke="#78350f" stroke-width="3" stroke-linecap="round"/>
+              <path d="M87,60 Q95,55 104,60" fill="none" stroke="#78350f" stroke-width="3" stroke-linecap="round"/>
+              <path d="M67,88 Q80,102 93,88" fill="#ef4444" stroke="#991b1b" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Tangan & Kanta Pembesar -->
+              <circle cx="122" cy="128" r="11" fill="url(#skinGrad1)"/>
+              <line x1="122" y1="128" x2="136" y2="104" stroke="#78350f" stroke-width="7" stroke-linecap="round"/>
+              <circle cx="140" cy="92" r="18" fill="#bae6fd" fill-opacity="0.7" stroke="#0284c7" stroke-width="5"/>
+              <path d="M132,85 Q138,80 145,84" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <span class="bg-yellow-400 text-yellow-950 font-cartoon font-bold text-xs px-3 py-0.5 rounded-full border-2 border-white shadow">UPIN</span>
+          </div>
+
+          <!-- WATAK IPIN (Baju Biru 'I', Kepala Botak Comel, Topi Detektif & Kanta Pembesar) -->
+          <div class="anim-ipin flex flex-col items-center">
+            <svg class="w-32 h-40 sm:w-36 sm:h-44 drop-shadow-lg" viewBox="0 0 160 200" aria-label="Ipin Detektif">
+              <defs>
+                <linearGradient id="ipinShirt" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#0284c7"/>
+                </linearGradient>
+              </defs>
+              <!-- Badan & Baju Biru -->
+              <rect x="46" y="112" width="68" height="62" rx="22" fill="url(#ipinShirt)" stroke="#0369a1" stroke-width="3"/>
+              <!-- Huruf I -->
+              <text x="80" y="150" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="26" fill="#fef08a">I</text>
+              <!-- Seluar Biru Gelap -->
+              <path d="M50,165 L110,165 L106,188 L85,188 L80,175 L75,188 L54,188 Z" fill="#1e3a8a"/>
+              <!-- Kepala 3D -->
+              <circle cx="80" cy="74" r="42" fill="url(#skinGrad1)" stroke="#d99b66" stroke-width="2.5"/>
+              <!-- Topi Detektif Hijau/Coklat -->
+              <ellipse cx="80" cy="40" rx="44" ry="10" fill="#15803d"/>
+              <path d="M46,40 C48,18 112,18 114,40 Z" fill="#22c55e" stroke="#166534" stroke-width="2"/>
+              <rect x="47" y="34" width="66" height="6" rx="3" fill="#fef08a"/>
+              <!-- Mata Ekspresif -->
+              <ellipse cx="65" cy="72" rx="8" ry="9" fill="#ffffff"/>
+              <circle cx="67" cy="72" r="4.5" fill="#1e293b"/>
+              <circle cx="68.5" cy="70" r="1.8" fill="#ffffff"/>
+              <ellipse cx="95" cy="72" rx="8" ry="9" fill="#ffffff"/>
+              <circle cx="93" cy="72" r="4.5" fill="#1e293b"/>
+              <circle cx="94.5" cy="70" r="1.8" fill="#ffffff"/>
+              <!-- Kening & Senyuman -->
+              <path d="M56,60 Q65,55 73,60" fill="none" stroke="#78350f" stroke-width="3" stroke-linecap="round"/>
+              <path d="M87,60 Q95,55 104,60" fill="none" stroke="#78350f" stroke-width="3" stroke-linecap="round"/>
+              <path d="M68,89 Q80,101 92,89" fill="none" stroke="#991b1b" stroke-width="3.5" stroke-linecap="round"/>
+              <!-- Tangan Kiri memegang Kanta Pembesar -->
+              <circle cx="38" cy="128" r="11" fill="url(#skinGrad1)"/>
+              <line x1="38" y1="128" x2="24" y2="104" stroke="#78350f" stroke-width="7" stroke-linecap="round"/>
+              <circle cx="20" cy="92" r="18" fill="#fef08a" fill-opacity="0.65" stroke="#eab308" stroke-width="5"/>
+              <path d="M13,85 Q19,80 26,84" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <span class="bg-sky-500 text-white font-cartoon font-bold text-xs px-3 py-0.5 rounded-full border-2 border-white shadow">IPIN</span>
+          </div>
+        </div>
+
+        <!-- Buih Dialog Upin & Ipin -->
+        <div class="lg:col-span-7">
+          <div class="speech-bubble p-5 sm:p-6 space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="bg-sky-500 text-white font-cartoon text-xs font-bold px-3 py-1 rounded-full">💬 PESANAN UPIN & IPIN</span>
+              <span class="text-xs font-bold text-sky-700">"Betul, betul, betul!"</span>
+            </div>
+            <p class="text-base sm:text-lg font-extrabold text-slate-800 leading-relaxed">
+              "Hai, Detektif Cilik! Kami perlukan bantuan kamu untuk menyiasat keadaan Kampung Durian Runtuh."
+            </p>
+            <p class="text-base sm:text-lg font-extrabold text-sky-800 leading-relaxed">
+              "Kami telah menemui sebuah cerita yang mengandungi maklumat penting. Bacalah cerita ini dengan teliti dan rakam suara kamu!"
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========================================================================
+         2. BAHAGIAN CERPEN – BACA DAN FAHAMI (BAHAGIAN ATAS)
+         ======================================================================== -->
+    <section aria-labelledby="tajuk-cerpen" class="card-3d-yellow p-5 sm:p-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
+        <div>
+          <span class="inline-block bg-amber-500 text-white font-cartoon font-bold text-xs px-3 py-1 rounded-full mb-1">
+            LANGKAH 1 • BACA DENGAN INTONASI BETUL
+          </span>
+          <h2 id="tajuk-cerpen" class="font-cartoon text-2xl sm:text-3xl font-bold text-amber-950">
+            📖 FAIL BACAAN: MISTERI KAMPUNG DURIAN RUNTUH
+          </h2>
+        </div>
+
+        <!-- Kawalan Saiz Tulisan -->
+        <div class="flex flex-wrap items-center gap-2 bg-white/90 p-2 rounded-2xl border-2 border-amber-300 shadow-sm">
+          <button id="btnFontUp" type="button" class="btn-3d btn-blue px-3 py-2 text-xs sm:text-sm" title="Besarkan Tulisan">
+            A+ Besarkan Tulisan
+          </button>
+          <button id="btnFontDown" type="button" class="btn-3d btn-yellow px-3 py-2 text-xs sm:text-sm" title="Kecilkan Tulisan">
+            A- Kecilkan Tulisan
+          </button>
+          <button id="btnFontReset" type="button" class="btn-3d btn-green px-3 py-2 text-xs sm:text-sm" title="Reset Saiz Tulisan">
+            🔄 Reset Saiz Tulisan
+          </button>
+        </div>
+      </div>
+
+      <!-- Kotak Bacaan 3D dengan Teks Cerpen Asal Lengkap (TIDAK DIUBAH WALAU SATU PERKATAAN) -->
+      <article class="story-paper p-6 sm:p-8 md:p-10">
+        <div id="storyTextContainer" class="space-y-5 text-slate-800 font-bold leading-relaxed transition-all duration-200" style="font-size: 1.25rem;">
+          <h3 class="font-cartoon text-center text-2xl sm:text-3xl font-bold text-sky-900 underline decoration-amber-400 decoration-4 underline-offset-8 mb-6">
+            MISTERI KAMPUNG DURIAN RUNTUH
+          </h3>
+
+          <p>
+            Pada suatu pagi yang cerah, suasana di Kampung Durian Runtuh kelihatan agak berbeza. Sampah bertaburan di tepi jalan, longkang tersumbat dengan daun kering dan kawasan taman permainan dipenuhi daun-daun yang gugur.
+          </p>
+
+          <p>
+            Tok Dalang berasa kecewa melihat keadaan kampungnya. Beliau mendapati ramai penduduk tidak menjalankan tanggungjawab masing-masing. Ada penduduk yang membuang sampah merata-rata, ada yang membiarkan kawasan rumah tidak terurus dan ada juga yang tidak membantu menjaga kebersihan kawasan kampung.
+          </p>
+
+          <p>
+            “Beginilah jadinya kalau semua orang hanya mementingkan diri sendiri,” kata Tok Dalang sambil menggelengkan kepala.
+          </p>
+
+          <p>
+            Pada hari itu, Upin dan Ipin berjalan-jalan di sekitar kampung. Mereka ternampak seorang jiran membuang sampah ke dalam longkang.
+          </p>
+
+          <p>
+            “Eh, kenapa pak cik buang sampah di situ?” tanya Upin.
+          </p>
+
+          <p>
+            “Bukan tugas saya untuk membersihkan longkang,” jawab lelaki itu sambil berlalu pergi.
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ========================================================================
+         3. BAHAGIAN RAKAMAN – STUDIO SUARA DETEKTIF (TERUS DI BAWAH CERPEN)
+         ======================================================================== -->
+    <section aria-labelledby="tajuk-studio" class="card-3d p-5 sm:p-8">
+      <!-- Kepala Bahagian Studio + Dialog Upin & Ipin -->
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-5 mb-6">
+        <div class="flex-1">
+          <span class="inline-block bg-sky-600 text-white font-cartoon font-bold text-xs px-3 py-1 rounded-full mb-1">
+            LANGKAH 2 • RAKAM SUARA BACAAN KAMU
+          </span>
+          <h2 id="tajuk-studio" class="font-cartoon text-2xl sm:text-3xl font-bold text-sky-950">
+            🎙️ MASA UNTUK RAKAM SUARA KAMU!
+          </h2>
+          <div class="speech-bubble mt-3 p-4 border-yellow-400">
+            <p class="font-bold text-slate-800 text-base sm:text-lg">
+              "Hebat, Detektif Cilik! Sekarang tiba masa untuk kami mendengar bacaan kamu. Tekan mikrofon dan mula membaca!"
+            </p>
+          </div>
+        </div>
+
+        <!-- Karakter Mini Upin & Ipin Memberi Semangat di Sebelah Studio -->
+        <div class="flex items-center gap-3 bg-sky-50 border-4 border-sky-200 rounded-3xl px-4 py-3 shadow-inner">
+          <div class="text-center anim-upin">
+            <div class="w-16 h-16 rounded-full bg-yellow-300 border-4 border-white shadow flex items-center justify-center text-3xl">
+              👦🏻
+            </div>
+            <span class="text-xs font-cartoon font-bold text-amber-800">Upin</span>
+          </div>
+          <div class="text-center">
+            <span class="inline-block bg-emerald-500 text-white font-cartoon font-bold text-xs px-3 py-1.5 rounded-2xl shadow">
+              "Semangat, Detektif!"
+            </span>
+          </div>
+          <div class="text-center anim-ipin">
+            <div class="w-16 h-16 rounded-full bg-sky-300 border-4 border-white shadow flex items-center justify-center text-3xl">
+              👦🏻
+            </div>
+            <span class="text-xs font-cartoon font-bold text-sky-900">Ipin</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KONSOL STUDIO RAKAMAN 3D -->
+      <div class="studio-console p-5 sm:p-8 text-white">
+        <!-- Bar Atas Studio: Lampu Indikator ON AIR + Pemasa Digital Besar -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-5 border-b-2 border-slate-700/80">
+          <!-- Lampu Indikator Status Mikrofon -->
+          <div id="studioStatusBadge" class="flex items-center gap-3 bg-slate-800/90 border-2 border-slate-600 px-4 py-2 rounded-2xl">
+            <span id="statusLed" class="w-4 h-4 rounded-full bg-emerald-400 shadow-[0_0_12px_#34d399]"></span>
+            <span id="statusText" class="font-cartoon font-bold text-sm sm:text-base tracking-wide text-emerald-300">
+              SEDIA MERAKAM
+            </span>
+          </div>
+
+          <!-- Pemasa Rakaman Digital Besar -->
+          <div class="flex items-center gap-3 bg-slate-950 border-3 border-sky-500/60 px-5 py-2 rounded-2xl shadow-inner">
+            <span class="text-xs font-cartoon text-sky-400 uppercase">Masa:</span>
+            <span id="recordingTimer" class="font-cartoon text-2xl sm:text-4xl font-bold text-yellow-400 tracking-wider">
+              00:00
+            </span>
+          </div>
+        </div>
+
+        <!-- Paparan Tengah Studio 3D: Pembesar Suara Kiri + Mikrofon 3D Besar + Pembesar Suara Kanan -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center my-6">
+          <!-- Pembesar Suara 3D Kiri & Fon Kepala -->
+          <div class="hidden md:flex md:col-span-3 flex-col items-center justify-center gap-3">
+            <div id="speakerLeft" class="w-28 h-36 bg-gradient-to-b from-slate-700 to-slate-900 rounded-3xl border-4 border-sky-400 shadow-lg flex flex-col items-center justify-center gap-2 p-2">
+              <div class="w-10 h-10 rounded-full bg-slate-950 border-4 border-amber-400 flex items-center justify-center">
+                <div class="w-3 h-3 rounded-full bg-amber-300"></div>
+              </div>
+              <div class="w-16 h-16 rounded-full bg-slate-950 border-4 border-sky-400 flex items-center justify-center">
+                <div class="w-6 h-6 rounded-full bg-sky-300"></div>
+              </div>
+            </div>
+            <span class="text-xs font-cartoon text-sky-300">🎧 FON KEPALA & SPEAKER</span>
+          </div>
+
+          <!-- Mikrofon Kondenser 3D Interaktif & Gelombang Suara Masa Nyata -->
+          <div class="md:col-span-6 flex flex-col items-center">
+            <button id="btnCenterMic" type="button" aria-label="Mikrofon Utama Studio" class="group relative w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-gradient-to-b from-yellow-300 via-amber-400 to-amber-500 border-4 border-white shadow-2xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95 cursor-pointer">
+              <!-- SVG Mikrofon 3D -->
+              <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-md" viewBox="0 0 100 100">
+                <defs>
+                  <linearGradient id="micGrill" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#f8fafc"/>
+                    <stop offset="50%" stop-color="#94a3b8"/>
+                    <stop offset="100%" stop-color="#475569"/>
+                  </linearGradient>
+                </defs>
+                <!-- Kapsul Mikrofon -->
+                <rect x="34" y="14" width="32" height="46" rx="16" fill="url(#micGrill)" stroke="#1e293b" stroke-width="3"/>
+                <line x1="36" y1="28" x2="64" y2="28" stroke="#334155" stroke-width="2.5"/>
+                <line x1="35" y1="37" x2="65" y2="37" stroke="#334155" stroke-width="2.5"/>
+                <line x1="36" y1="46" x2="64" y2="46" stroke="#334155" stroke-width="2.5"/>
+                <!-- Pemegang U -->
+                <path d="M25,44 C25,68 75,68 75,44" fill="none" stroke="#0284c7" stroke-width="6" stroke-linecap="round"/>
+                <!-- Kaki Mikrofon -->
+                <line x1="50" y1="64" x2="50" y2="84" stroke="#0284c7" stroke-width="6" stroke-linecap="round"/>
+                <rect x="32" y="82" width="36" height="8" rx="4" fill="#ef4444" stroke="#ffffff" stroke-width="1.5"/>
+              </svg>
+            </button>
+            <p class="text-xs sm:text-sm font-cartoon text-yellow-300 mt-3 text-center">
+              Klik mikrofon di atas atau butang <span class="underline">MULA RAKAM</span> di bawah
+            </p>
+
+            <!-- Canvas Gelombang Suara Masa Nyata (Web Audio API AnalyserNode) -->
+            <div class="w-full mt-4 bg-slate-950/90 border-2 border-sky-500/50 rounded-2xl p-2 shadow-inner">
+              <canvas id="waveformCanvas" class="w-full h-20 block rounded-xl"></canvas>
+            </div>
+          </div>
+
+          <!-- Pembesar Suara 3D Kanan & Meja Kawalan Audio -->
+          <div class="hidden md:flex md:col-span-3 flex-col items-center justify-center gap-3">
+            <div id="speakerRight" class="w-28 h-36 bg-gradient-to-b from-slate-700 to-slate-900 rounded-3xl border-4 border-sky-400 shadow-lg flex flex-col items-center justify-center gap-2 p-2">
+              <div class="w-10 h-10 rounded-full bg-slate-950 border-4 border-amber-400 flex items-center justify-center">
+                <div class="w-3 h-3 rounded-full bg-amber-300"></div>
+              </div>
+              <div class="w-16 h-16 rounded-full bg-slate-950 border-4 border-sky-400 flex items-center justify-center">
+                <div class="w-6 h-6 rounded-full bg-sky-300"></div>
+              </div>
+            </div>
+            <span class="text-xs font-cartoon text-emerald-300">🎛️ MEJA KAWALAN AUDIO</span>
+          </div>
+        </div>
+
+        <!-- Meja Kawalan Audio Visual (Slider Hiasan & LED) -->
+        <div class="bg-slate-800/80 border-2 border-slate-700 rounded-2xl px-4 py-2.5 mb-5 flex flex-wrap items-center justify-between gap-3 text-xs font-cartoon text-slate-300">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+            <span>KONSOL DETEKTIF v4.0</span>
+          </div>
+          <div id="micDeviceHint" class="text-sky-300 font-sans font-bold">
+            Status Mikrofon: Menunggu murid menekan butang rakaman
+          </div>
+        </div>
+
+        <!-- Kotak Amaran Jujur Jika Mikrofon Tidak Disokong / Disekat -->
+        <div id="micErrorBox" class="hidden mb-5 bg-red-950/90 border-3 border-red-400 text-red-100 rounded-2xl p-4">
+          <p class="font-cartoon font-bold text-base sm:text-lg text-yellow-300 mb-1">
+            ⚠️ Akses Mikrofon Diperlukan
+          </p>
+          <p id="micErrorMessage" class="text-sm sm:text-base font-bold leading-relaxed">
+            Rakaman suara tidak tersedia (sila benarkan akses mikrofon pada pelayar anda atau gunakan pelayar seperti Chrome/Edge).
+          </p>
+        </div>
+
+        <!-- LIMA BUTANG UTAMA STUDIO RAKAMAN -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          <button id="btnStartRecord" type="button" class="btn-3d btn-red py-3.5 px-3 text-sm sm:text-base">
+            🎙️ MULA RAKAM
+          </button>
+
+          <button id="btnStopRecord" type="button" disabled class="btn-3d btn-yellow py-3.5 px-3 text-sm sm:text-base">
+            ⏹️ HENTIKAN RAKAMAN
+          </button>
+
+          <button id="btnPlayRecord" type="button" disabled class="btn-3d btn-blue py-3.5 px-3 text-sm sm:text-base">
+            ▶️ DENGAR SEMULA
+          </button>
+
+          <button id="btnResetRecord" type="button" disabled class="btn-3d btn-orange py-3.5 px-3 text-sm sm:text-base">
+            🔄 RAKAM SEMULA
+          </button>
+
+          <button id="btnDownloadRecord" type="button" disabled class="btn-3d btn-green py-3.5 px-3 text-sm sm:text-base">
+            💾 MUAT TURUN RAKAMAN
+          </button>
+        </div>
+
+        <!-- Pemain Audio Sebenar & Maklum Balas Selepas Rakaman -->
+        <div id="playbackContainer" class="hidden mt-5 bg-slate-800/95 border-3 border-emerald-400 rounded-2xl p-4 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="font-cartoon font-bold text-emerald-300 text-sm sm:text-base">
+              ✅ Rakaman Suara Kamu Berjaya Dicipta!
+            </span>
+            <span id="audioFormatBadge" class="text-xs font-bold bg-emerald-950 text-emerald-200 px-3 py-1 rounded-full border border-emerald-500">
+              Format Audio Sebenar
+            </span>
+          </div>
+          <audio id="recordedAudioPlayer" controls class="w-full rounded-xl"></audio>
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+            <p class="text-xs sm:text-sm text-sky-200 font-bold">
+              Tekan <span class="text-emerald-300">"💾 MUAT TURUN RAKAMAN"</span> untuk menyimpan fail suara ke peranti kamu.
+            </p>
+            <button id="btnClaimBadge" type="button" class="btn-3d btn-yellow px-4 py-2 text-xs sm:text-sm">
+              🏆 TUNTUT LENCANA DETEKTIF
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         4. BAHAGIAN PENGHANTARAN BUKTI KEPADA CIKGU (BAHAGIAN BAWAH)
+         ======================================================================== -->
+    <section aria-labelledby="tajuk-bukti" class="card-3d-green p-5 sm:p-8">
+      <div class="flex flex-col md:flex-row items-center gap-6">
+        <!-- Ikon Peti Bukti Detektif 3D -->
+        <div class="flex-shrink-0">
+          <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-b from-amber-300 to-amber-500 border-4 border-white shadow-xl flex flex-col items-center justify-center relative">
+            <span class="text-5xl sm:text-6xl drop-shadow">🧳</span>
+            <span class="bg-red-600 text-white font-cartoon text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-white mt-1">
+              PETI BUKTI
+            </span>
+          </div>
+        </div>
+
+        <!-- Kandungan & Butang Google Drive Sebenar -->
+        <div class="flex-1 text-center md:text-left space-y-3">
+          <span class="inline-block bg-emerald-700 text-white font-cartoon font-bold text-xs px-3 py-1 rounded-full">
+            LANGKAH 3 • HANTAR BUKTI KEPADA CIKGU
+          </span>
+          <h2 id="tajuk-bukti" class="font-cartoon text-2xl sm:text-3xl font-bold text-emerald-950">
+            📩 HANTARKAN BUKTI SIASATAN KEPADA CIKGU!
+          </h2>
+          <p class="text-base sm:text-lg font-bold text-slate-800 leading-relaxed">
+            "Detektif Cilik, setelah selesai merakam bacaan kamu, muat turun rakaman tersebut dan hantarkan kepada cikgu melalui folder yang disediakan."
+          </p>
+
+          <!-- Butang Besar 3D menggunakan pautan HTML <a> sebenar -->
+          <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+            <a
+              id="btnGoogleDrive"
+              href="https://drive.google.com/drive/folders/1Joa6jq44PF2AZU9D1ngAXraLSG74F2UE?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-3d btn-blue w-full sm:w-auto px-6 py-4 text-base sm:text-lg shadow-xl"
+            >
+              📂 BUKA FOLDER GOOGLE DRIVE
+            </a>
+
+            <button id="btnCopyDriveLink" type="button" class="btn-3d btn-yellow w-full sm:w-auto px-4 py-3.5 text-xs sm:text-sm">
+              📋 Salin Pautan Folder
+            </button>
+          </div>
+
+          <!-- Pautan Teks Alternatif Sebenar -->
+          <div class="pt-1 space-y-1">
+            <p class="text-sm font-bold text-emerald-900">
+              <a
+                href="https://drive.google.com/drive/folders/1Joa6jq44PF2AZU9D1ngAXraLSG74F2UE?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="underline decoration-2 text-sky-700 hover:text-sky-900"
+              >
+                Tidak dapat membuka folder? Klik di sini untuk buka Google Drive
+              </a>
+            </p>
+            <p id="copyFeedback" class="hidden text-xs font-extrabold text-emerald-800 bg-white/80 inline-block px-3 py-1 rounded-full">
+              ✅ Pautan folder Google Drive telah disalin! Tampal di pelayar jika perlu.
+            </p>
+            <p class="text-xs sm:text-sm font-bold text-amber-900 bg-amber-100/90 border-2 border-amber-300 rounded-2xl px-4 py-2 mt-2">
+              💡 <strong>Nota:</strong> Sila tekan <strong>'MUAT TURUN RAKAMAN'</strong> dahulu, kemudian muat naik fail audio tersebut ke dalam folder Google Drive cikgu.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       5. PAPARAN KEJAYAAN (OVERLAY / MODAL INTERAKTIF + KONFETI)
+       ========================================================================== -->
+  <div id="celebrationModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-sky-950/75 backdrop-blur-sm">
+    <!-- Canvas Konfeti Berwarna-warni -->
+    <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Kad Kejayaan 3D -->
+    <div class="relative z-10 card-3d-yellow max-w-xl w-full p-6 sm:p-8 text-center space-y-5">
+      <!-- Bintang Berkilauan -->
+      <div class="flex justify-center gap-4 text-3xl select-none">
+        <span class="sparkle-star">⭐</span>
+        <span class="sparkle-star" style="animation-delay: 0.5s;">🌟</span>
+        <span class="sparkle-star" style="animation-delay: 1s;">⭐</span>
+      </div>
+
+      <!-- Lencana 3D Berkilat: DETEKTIF SUARA HEBAT -->
+      <div class="mx-auto w-44 h-44 rounded-full bg-gradient-to-b from-yellow-300 via-amber-400 to-amber-600 border-8 border-white shadow-2xl flex flex-col items-center justify-center p-3 relative">
+        <div class="text-4xl mb-1">🎙️🔎</div>
+        <p class="font-cartoon font-bold text-xs text-amber-950 uppercase tracking-wider">LENCANA RASMI</p>
+        <p class="font-cartoon font-bold text-sm sm:text-base text-white drop-shadow leading-tight mt-0.5">
+          DETEKTIF SUARA HEBAT
+        </p>
+      </div>
+
+      <!-- Upin & Ipin Melompat Gembira -->
+      <div class="flex justify-center items-center gap-6 py-1">
+        <div class="anim-celebrate flex flex-col items-center">
+          <div class="w-16 h-16 rounded-full bg-yellow-400 border-4 border-white shadow-md flex items-center justify-center font-cartoon font-bold text-2xl text-sky-800">
+            U
+          </div>
+          <span class="text-xs font-cartoon font-bold text-amber-900 mt-1">Upin Gembira!</span>
+        </div>
+        <div class="text-3xl">🎉</div>
+        <div class="anim-celebrate flex flex-col items-center" style="animation-delay: 0.25s;">
+          <div class="w-16 h-16 rounded-full bg-sky-500 border-4 border-white shadow-md flex items-center justify-center font-cartoon font-bold text-2xl text-yellow-300">
+            I
+          </div>
+          <span class="text-xs font-cartoon font-bold text-sky-900 mt-1">Ipin Gembira!</span>
+        </div>
+      </div>
+
+      <!-- Mesej Tahniah -->
+      <div class="space-y-2">
+        <h2 class="font-cartoon text-2xl sm:text-4xl font-bold text-amber-950">
+          🏆 TAHNIAH, DETEKTIF CILIK!
+        </h2>
+        <p class="text-base sm:text-lg font-extrabold text-slate-800 leading-relaxed">
+          "Kamu telah berjaya menyelesaikan Misi Membaca! Upin dan Ipin bangga dengan usaha kamu."
+        </p>
+      </div>
+
+      <!-- Butang MAIN SEMULA & SELESAI -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+        <button id="btnPlayAgain" type="button" class="btn-3d btn-blue w-full sm:w-auto px-6 py-3.5 text-base">
+          🔄 MAIN SEMULA
+        </button>
+        <button id="btnFinishMission" type="button" class="btn-3d btn-green w-full sm:w-auto px-6 py-3.5 text-base">
+          ✅ SELESAI
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       SKRIP INTERAKTIF: WEB AUDIO SINTETIK, MEDIARECORDER SEBENAR & KONFETI
+       ========================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ------------------------------------------------------------------------
+         1. ENJIN AUDIO SINTETIK (MUZIK LATAR CERIA, BUNYI KLIK & FANFARE KEJAYAAN)
+            Menggunakan Web Audio API sepenuhnya supaya tidak bergantung pada fail luar.
+         ------------------------------------------------------------------------ */
+      let audioCtx = null;
+      let isMusicPlaying = false;
+      let musicInterval = null;
+      let masterGainNode = null;
+      let musicVolume = 0.45; // Nilai lalai 45%
+
+      function ensureAudioContext() {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            audioCtx = new AudioContextClass();
+            masterGainNode = audioCtx.createGain();
+            masterGainNode.gain.value = musicVolume;
+            masterGainNode.connect(audioCtx.destination);
+          }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      }
+
+      // Bunyi Klik Butang 3D yang Ceria
+      function playClickSfx() {
+        try {
+          ensureAudioContext();
+          if (!audioCtx) return;
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(520, now);
+          osc.frequency.exponentialRampToValueAtTime(780, now + 0.07);
+
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.085);
+        } catch (e) {
+          // Abaikan jika sekatan autoplay
+        }
+      }
+
+      // Bunyi Kejayaan (Fanfare Kemenangan)
+      function playSuccessFanfare() {
+        try {
+          ensureAudioContext();
+          if (!audioCtx) return;
+          const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+          const times = [0, 0.13, 0.26, 0.40];
+          const durations = [0.14, 0.14, 0.14, 0.45];
+
+          notes.forEach((freq, idx) => {
+            const startTime = audioCtx.currentTime + times[idx];
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, startTime);
+
+            gain.gain.setValueAtTime(0.24, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + durations[idx]);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(startTime);
+            osc.stop(startTime + durations[idx] + 0.02);
+          });
+        } catch (e) {
+          // Abaikan ralat audio
+        }
+      }
+
+      // Melodi Latar Ceria Permainan Kanak-Kanak (Gelung Automatik)
+      const melodySequence = [
+        { f: 523.25, d: 0.22 }, // C5
+        { f: 587.33, d: 0.22 }, // D5
+        { f: 659.25, d: 0.22 }, // E5
+        { f: 523.25, d: 0.22 }, // C5
+        { f: 659.25, d: 0.22 }, // E5
+        { f: 698.46, d: 0.22 }, // F5
+        { f: 783.99, d: 0.40 }, // G5
+        { f: 0,      d: 0.15 },
+        { f: 783.99, d: 0.20 }, // G5
+        { f: 880.00, d: 0.20 }, // A5
+        { f: 783.99, d: 0.20 }, // G5
+        { f: 698.46, d: 0.20 }, // F5
+        { f: 659.25, d: 0.25 }, // E5
+        { f: 523.25, d: 0.35 }, // C5
+        { f: 587.33, d: 0.25 }, // D5
+        { f: 783.99, d: 0.25 }, // G5
+        { f: 523.25, d: 0.45 }, // C5
+        { f: 0,      d: 0.25 }
+      ];
+      let noteIndex = 0;
+
+      function startBackgroundMusic() {
+        ensureAudioContext();
+        if (!audioCtx || isMusicPlaying) return;
+        isMusicPlaying = true;
+        updateMusicButtonUI();
+
+        function scheduleNextNote() {
+          if (!isMusicPlaying) return;
+          const note = melodySequence[noteIndex];
+          noteIndex = (noteIndex + 1) % melodySequence.length;
+
+          if (note.f > 0 && audioCtx && masterGainNode) {
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const noteGain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(note.f, now);
+
+            noteGain.gain.setValueAtTime(0.16, now);
+            noteGain.gain.exponentialRampToValueAtTime(0.001, now + note.d * 0.92);
+
+            osc.connect(noteGain);
+            noteGain.connect(masterGainNode);
+            osc.start(now);
+            osc.stop(now + note.d);
+          }
+
+          musicInterval = setTimeout(scheduleNextNote, note.d * 1000);
+        }
+
+        scheduleNextNote();
+      }
+
+      function stopBackgroundMusic() {
+        isMusicPlaying = false;
+        if (musicInterval) {
+          clearTimeout(musicInterval);
+          musicInterval = null;
+        }
+        updateMusicButtonUI();
+      }
+
+      const btnToggleMusic = document.getElementById('btnToggleMusic');
+      const musicIcon = document.getElementById('musicIcon');
+      const musicLabel = document.getElementById('musicLabel');
+      const volumeSlider = document.getElementById('volumeSlider');
+
+      function updateMusicButtonUI() {
+        if (isMusicPlaying) {
+          musicIcon.textContent = '🎶';
+          musicLabel.textContent = 'Muzik: ON';
+          btnToggleMusic.classList.remove('btn-yellow');
+          btnToggleMusic.classList.add('btn-green');
+        } else {
+          musicIcon.textContent = '🎵';
+          musicLabel.textContent = 'Muzik: OFF';
+          btnToggleMusic.classList.remove('btn-green');
+          btnToggleMusic.classList.add('btn-yellow');
+        }
+      }
+
+      btnToggleMusic.addEventListener('click', () => {
+        playClickSfx();
+        if (isMusicPlaying) {
+          stopBackgroundMusic();
+        } else {
+          startBackgroundMusic();
+        }
+      });
+
+      volumeSlider.addEventListener('input', (e) => {
+        musicVolume = Number(e.target.value) / 100;
+        if (masterGainNode && audioCtx) {
+          masterGainNode.gain.setValueAtTime(musicVolume, audioCtx.currentTime);
+        }
+      });
+
+      /* ------------------------------------------------------------------------
+         2. KAWALAN SAIZ TULISAN CERPEN (A+, A-, RESET)
+         ------------------------------------------------------------------------ */
+      const storyTextContainer = document.getElementById('storyTextContainer');
+      const DEFAULT_FONT_REM = 1.25;
+      let currentFontRem = DEFAULT_FONT_REM;
+
+      document.getElementById('btnFontUp').addEventListener('click', () => {
+        playClickSfx();
+        if (currentFontRem < 1.95) {
+          currentFontRem = Number((currentFontRem + 0.15).toFixed(2));
+          storyTextContainer.style.fontSize = currentFontRem + 'rem';
+        }
+      });
+
+      document.getElementById('btnFontDown').addEventListener('click', () => {
+        playClickSfx();
+        if (currentFontRem > 0.95) {
+          currentFontRem = Number((currentFontRem - 0.15).toFixed(2));
+          storyTextContainer.style.fontSize = currentFontRem + 'rem';
+        }
+      });
+
+      document.getElementById('btnFontReset').addEventListener('click', () => {
+        playClickSfx();
+        currentFontRem = DEFAULT_FONT_REM;
+        storyTextContainer.style.fontSize = currentFontRem + 'rem';
+      });
+
+      /* ------------------------------------------------------------------------
+         3. STUDIO RAKAMAN SUARA SEBENAR (MediaRecorder API + AnalyserNode)
+         ------------------------------------------------------------------------ */
+      const btnCenterMic = document.getElementById('btnCenterMic');
+      const btnStartRecord = document.getElementById('btnStartRecord');
+      const btnStopRecord = document.getElementById('btnStopRecord');
+      const btnPlayRecord = document.getElementById('btnPlayRecord');
+      const btnResetRecord = document.getElementById('btnResetRecord');
+      const btnDownloadRecord = document.getElementById('btnDownloadRecord');
+      const btnClaimBadge = document.getElementById('btnClaimBadge');
+
+      const statusLed = document.getElementById('statusLed');
+      const statusText = document.getElementById('statusText');
+      const recordingTimerEl = document.getElementById('recordingTimer');
+      const micDeviceHint = document.getElementById('micDeviceHint');
+      const micErrorBox = document.getElementById('micErrorBox');
+      const micErrorMessage = document.getElementById('micErrorMessage');
+      const playbackContainer = document.getElementById('playbackContainer');
+      const recordedAudioPlayer = document.getElementById('recordedAudioPlayer');
+      const audioFormatBadge = document.getElementById('audioFormatBadge');
+      const speakerLeft = document.getElementById('speakerLeft');
+      const speakerRight = document.getElementById('speakerRight');
+
+      const waveformCanvas = document.getElementById('waveformCanvas');
+      const waveCtx = waveformCanvas.getContext('2d');
+
+      let mediaRecorder = null;
+      let mediaStream = null;
+      let audioChunks = [];
+      let recordedBlob = null;
+      let recordedUrl = null;
+      let chosenMimeType = '';
+      let fileExtension = 'webm';
+
+      let isRecording = false;
+      let timerInterval = null;
+      let secondsElapsed = 0;
+
+      // Web Audio Analyser untuk gelombang suara sebenar
+      let micAudioCtx = null;
+      let analyserNode = null;
+      let waveAnimFrame = null;
+
+      function resizeWaveCanvas() {
+        const rect = waveformCanvas.getBoundingClientRect();
+        waveformCanvas.width = rect.width || 400;
+        waveformCanvas.height = rect.height || 80;
+        if (!isRecording) {
+          drawIdleWaveform();
+        }
+      }
+
+      function drawIdleWaveform() {
+        const w = waveformCanvas.width;
+        const h = waveformCanvas.height;
+        waveCtx.clearRect(0, 0, w, h);
+
+        // Garis asas studio tenang
+        waveCtx.strokeStyle = '#38bdf8';
+        waveCtx.lineWidth = 3;
+        waveCtx.beginPath();
+        waveCtx.moveTo(16, h / 2);
+        waveCtx.lineTo(w - 16, h / 2);
+        waveCtx.stroke();
+      }
+
+      function drawLiveWaveform() {
+        if (!isRecording || !analyserNode) return;
+        const w = waveformCanvas.width;
+        const h = waveformCanvas.height;
+        const bufferLength = analyserNode.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        analyserNode.getByteFrequencyData(dataArray);
+
+        waveCtx.clearRect(0, 0, w, h);
+
+        const barCount = 36;
+        const step = Math.floor(bufferLength / barCount);
+        const barWidth = (w - 32) / barCount;
+
+        for (let i = 0; i < barCount; i++) {
+          const val = dataArray[i * step] || 0;
+          const barHeight = Math.max(6, (val / 255) * (h - 14));
+          const x = 16 + i * barWidth;
+          const y = (h - barHeight) / 2;
+
+          // Gradien warna ceria
+          waveCtx.fillStyle = i % 2 === 0 ? '#facc15' : '#38bdf8';
+          waveCtx.beginPath();
+          waveCtx.roundRect(x + 2, y, Math.max(4, barWidth - 4), barHeight, 4);
+          waveCtx.fill();
+        }
+
+        waveAnimFrame = requestAnimationFrame(drawLiveWaveform);
+      }
+
+      window.addEventListener('resize', resizeWaveCanvas);
+      window.addEventListener('load', resizeWaveCanvas);
+
+      function formatTime(totalSec) {
+        const mins = String(Math.floor(totalSec / 60)).padStart(2, '0');
+        const secs = String(totalSec % 60).padStart(2, '0');
+        return `${mins}:${secs}`;
+      }
+
+      function startTimer() {
+        secondsElapsed = 0;
+        recordingTimerEl.textContent = '00:00';
+        timerInterval = setInterval(() => {
+          secondsElapsed++;
+          recordingTimerEl.textContent = formatTime(secondsElapsed);
+        }, 1000);
+      }
+
+      function stopTimer() {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+      }
+
+      function detectSupportedMimeType() {
+        if (typeof MediaRecorder === 'undefined') return '';
+        const candidates = [
+          { mime: 'audio/webm;codecs=opus', ext: 'webm' },
+          { mime: 'audio/webm', ext: 'webm' },
+          { mime: 'audio/ogg;codecs=opus', ext: 'ogg' },
+          { mime: 'audio/mp4', ext: 'mp4' }
+        ];
+        for (const item of candidates) {
+          if (MediaRecorder.isTypeSupported(item.mime)) {
+            fileExtension = item.ext;
+            return item.mime;
+          }
+        }
+        fileExtension = 'webm';
+        return '';
+      }
+
+      function stopAllStreams() {
+        if (waveAnimFrame) {
+          cancelAnimationFrame(waveAnimFrame);
+          waveAnimFrame = null;
+        }
+        if (mediaStream) {
+          mediaStream.getTracks().forEach(track => track.stop());
+          mediaStream = null;
+        }
+        if (micAudioCtx) {
+          micAudioCtx.close().catch(() => {});
+          micAudioCtx = null;
+          analyserNode = null;
+        }
+      }
+
+      async function startRealRecording() {
+        playClickSfx();
+        micErrorBox.classList.add('hidden');
+
+        // Semak sokongan browser terlebih dahulu
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === 'undefined') {
+          micErrorMessage.textContent = 'Rakaman suara tidak tersedia pada pelayar ini. Sila gunakan pelayar moden seperti Google Chrome, Microsoft Edge, atau Safari terkini.';
+          micErrorBox.classList.remove('hidden');
+          micDeviceHint.textContent = 'Status Mikrofon: Tidak disokong oleh pelayar';
+          return;
+        }
+
+        // PENTING: Hentikan muzik latar secara automatik ketika rakaman bermula
+        if (isMusicPlaying) {
+          stopBackgroundMusic();
+        }
+
+        try {
+          micDeviceHint.textContent = 'Status Mikrofon: Meminta kebenaran mikrofon...';
+          mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+          // Hanya mulakan rakaman & animasi SELEPAS kebenaran mikrofon sebenar berjaya
+          chosenMimeType = detectSupportedMimeType();
+          audioChunks = [];
+
+          mediaRecorder = chosenMimeType
+            ? new MediaRecorder(mediaStream, { mimeType: chosenMimeType })
+            : new MediaRecorder(mediaStream);
+
+          mediaRecorder.ondataavailable = (event) => {
+            if (event.data && event.data.size > 0) {
+              audioChunks.push(event.data);
+            }
+          };
+
+          mediaRecorder.onstop = () => {
+            const finalType = chosenMimeType || (audioChunks[0] ? audioChunks[0].type : 'audio/webm');
+            recordedBlob = new Blob(audioChunks, { type: finalType });
+
+            if (recordedUrl) {
+              URL.revokeObjectURL(recordedUrl);
+            }
+            recordedUrl = URL.createObjectURL(recordedBlob);
+            recordedAudioPlayer.src = recordedUrl;
+
+            audioFormatBadge.textContent = `Audio Sebenar (${fileExtension.toUpperCase()}) • ${formatTime(secondsElapsed)}`;
+            playbackContainer.classList.remove('hidden');
+
+            // Kemas kini butang selepas rakaman tamat
+            btnStartRecord.disabled = false;
+            btnStopRecord.disabled = true;
+            btnPlayRecord.disabled = false;
+            btnResetRecord.disabled = false;
+            btnDownloadRecord.disabled = false;
+
+            statusLed.className = 'w-4 h-4 rounded-full bg-emerald-400 shadow-[0_0_12px_#34d399]';
+            statusText.textContent = 'RAKAMAN SELESAI';
+            statusText.className = 'font-cartoon font-bold text-sm sm:text-base tracking-wide text-emerald-300';
+            micDeviceHint.textContent = 'Status Mikrofon: Rakaman berjaya disimpan dalam memori';
+
+            btnCenterMic.classList.remove('mic-recording-ring');
+            speakerLeft.classList.remove('speaker-active');
+            speakerRight.classList.remove('speaker-active');
+
+            stopAllStreams();
+            drawIdleWaveform();
+          };
+
+          // Sediakan AnalyserNode untuk gelombang suara masa nyata
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          micAudioCtx = new AudioContextClass();
+          const sourceNode = micAudioCtx.createMediaStreamSource(mediaStream);
+          analyserNode = micAudioCtx.createAnalyser();
+          analyserNode.fftSize = 128;
+          sourceNode.connect(analyserNode);
+
+          mediaRecorder.start();
+          isRecording = true;
+
+          // Kemas kini UI Studio ke mod SEDANG MERAKAM
+          statusLed.className = 'w-4 h-4 rounded-full bg-red-500 animate-ping';
+          statusText.textContent = '🔴 SEDANG MERAKAM';
+          statusText.className = 'font-cartoon font-bold text-sm sm:text-base tracking-wide text-red-400';
+          micDeviceHint.textContent = 'Status Mikrofon: Mikrofon aktif — Silakan membaca cerpen!';
+
+          btnCenterMic.classList.add('mic-recording-ring');
+          speakerLeft.classList.add('speaker-active');
+          speakerRight.classList.add('speaker-active');
+
+          playbackContainer.classList.add('hidden');
+          btnStartRecord.disabled = true;
+          btnStopRecord.disabled = false;
+          btnPlayRecord.disabled = true;
+          btnResetRecord.disabled = true;
+          btnDownloadRecord.disabled = true;
+
+          startTimer();
+          resizeWaveCanvas();
+          drawLiveWaveform();
+        } catch (err) {
+          isRecording = false;
+          stopAllStreams();
+          micErrorMessage.textContent = 'Rakaman suara tidak tersedia (sila benarkan akses mikrofon pada pelayar anda atau pastikan mikrofon peranti disambungkan).';
+          micErrorBox.classList.remove('hidden');
+          micDeviceHint.textContent = 'Status Mikrofon: Akses mikrofon ditolak atau tidak ditemui';
+        }
+      }
+
+      function stopRealRecording() {
+        playClickSfx();
+        if (mediaRecorder && isRecording) {
+          isRecording = false;
+          stopTimer();
+          mediaRecorder.stop();
+        }
+      }
+
+      function resetRecordingState() {
+        playClickSfx();
+        if (isRecording) {
+          stopRealRecording();
+        }
+        if (recordedUrl) {
+          URL.revokeObjectURL(recordedUrl);
+          recordedUrl = null;
+        }
+        recordedBlob = null;
+        audioChunks = [];
+        recordedAudioPlayer.pause();
+        recordedAudioPlayer.removeAttribute('src');
+        playbackContainer.classList.add('hidden');
+
+        secondsElapsed = 0;
+        recordingTimerEl.textContent = '00:00';
+
+        statusLed.className = 'w-4 h-4 rounded-full bg-emerald-400 shadow-[0_0_12px_#34d399]';
+        statusText.textContent = 'SEDIA MERAKAM';
+        statusText.className = 'font-cartoon font-bold text-sm sm:text-base tracking-wide text-emerald-300';
+        micDeviceHint.textContent = 'Status Mikrofon: Sedia untuk rakaman baharu';
+
+        btnStartRecord.disabled = false;
+        btnStopRecord.disabled = true;
+        btnPlayRecord.disabled = true;
+        btnResetRecord.disabled = true;
+        btnDownloadRecord.disabled = true;
+
+        drawIdleWaveform();
+      }
+
+      // Acara Butang Studio
+      btnStartRecord.addEventListener('click', startRealRecording);
+      btnCenterMic.addEventListener('click', () => {
+        if (isRecording) {
+          stopRealRecording();
+        } else {
+          startRealRecording();
+        }
+      });
+      btnStopRecord.addEventListener('click', stopRealRecording);
+
+      btnPlayRecord.addEventListener('click', () => {
+        playClickSfx();
+        if (recordedAudioPlayer.src) {
+          recordedAudioPlayer.currentTime = 0;
+          recordedAudioPlayer.play();
+        }
+      });
+
+      btnResetRecord.addEventListener('click', resetRecordingState);
+
+      btnDownloadRecord.addEventListener('click', () => {
+        playClickSfx();
+        if (!recordedBlob || !recordedUrl) return;
+
+        const a = document.createElement('a');
+        a.href = recordedUrl;
+        a.download = `Bacaan_Detektif_Cilik_Upin_Ipin.${fileExtension}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Paparkan sambutan kejayaan & bunyi fanfare
+        openCelebrationModal();
+      });
+
+      btnClaimBadge.addEventListener('click', () => {
+        playClickSfx();
+        openCelebrationModal();
+      });
+
+      /* ------------------------------------------------------------------------
+         4. PAUTAN GOOGLE DRIVE & SALIN PAUTAN ALTERNATIF
+         ------------------------------------------------------------------------ */
+      const DRIVE_URL = 'https://drive.google.com/drive/folders/1Joa6jq44PF2AZU9D1ngAXraLSG74F2UE?usp=sharing';
+      const btnGoogleDrive = document.getElementById('btnGoogleDrive');
+      const btnCopyDriveLink = document.getElementById('btnCopyDriveLink');
+      const copyFeedback = document.getElementById('copyFeedback');
+
+      btnGoogleDrive.addEventListener('click', () => {
+        playClickSfx();
+      });
+
+      btnCopyDriveLink.addEventListener('click', () => {
+        playClickSfx();
+        const tempInput = document.createElement('textarea');
+        tempInput.value = DRIVE_URL;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try {
+          document.execCommand('copy');
+          copyFeedback.classList.remove('hidden');
+        } catch (err) {
+          copyFeedback.textContent = 'Pautan: ' + DRIVE_URL;
+          copyFeedback.classList.remove('hidden');
+        }
+        document.body.removeChild(tempInput);
+      });
+
+      /* ------------------------------------------------------------------------
+         5. PAPARAN KEJAYAAN & ANIMASI KONFETI 3D
+         ------------------------------------------------------------------------ */
+      const celebrationModal = document.getElementById('celebrationModal');
+      const confettiCanvas = document.getElementById('confettiCanvas');
+      const confettiCtx = confettiCanvas.getContext('2d');
+      const miniBadgeHeader = document.getElementById('miniBadgeHeader');
+
+      let confettiParticles = [];
+      let confettiAnimId = null;
+
+      function createConfetti() {
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+        const colors = ['#facc15', '#38bdf8', '#22c55e', '#f43f5e', '#a855f7', '#fb923c'];
+        confettiParticles = [];
+
+        for (let i = 0; i < 110; i++) {
+          confettiParticles.push({
+            x: Math.random() * confettiCanvas.width,
+            y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+            w: Math.random() * 12 + 6,
+            h: Math.random() * 8 + 4,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            speedY: Math.random() * 3.5 + 2,
+            speedX: (Math.random() - 0.5) * 2.5,
+            rotation: Math.random() * 360,
+            rotSpeed: (Math.random() - 0.5) * 8
+          });
+        }
+      }
+
+      function renderConfetti() {
+        confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+
+        confettiParticles.forEach((p) => {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.rotation += p.rotSpeed;
+
+          if (p.y > confettiCanvas.height) {
+            p.y = -20;
+            p.x = Math.random() * confettiCanvas.width;
+          }
+
+          confettiCtx.save();
+          confettiCtx.translate(p.x, p.y);
+          confettiCtx.rotate((p.rotation * Math.PI) / 180);
+          confettiCtx.fillStyle = p.color;
+          confettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          confettiCtx.restore();
+        });
+
+        confettiAnimId = requestAnimationFrame(renderConfetti);
+      }
+
+      function openCelebrationModal() {
+        celebrationModal.classList.remove('hidden');
+        celebrationModal.classList.add('flex');
+        playSuccessFanfare();
+        createConfetti();
+        if (confettiAnimId) cancelAnimationFrame(confettiAnimId);
+        renderConfetti();
+      }
+
+      function closeCelebrationModal() {
+        celebrationModal.classList.add('hidden');
+        celebrationModal.classList.remove('flex');
+        if (confettiAnimId) {
+          cancelAnimationFrame(confettiAnimId);
+          confettiAnimId = null;
+        }
+      }
+
+      document.getElementById('btnPlayAgain').addEventListener('click', () => {
+        playClickSfx();
+        closeCelebrationModal();
+        resetRecordingState();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      document.getElementById('btnFinishMission').addEventListener('click', () => {
+        playClickSfx();
+        closeCelebrationModal();
+        miniBadgeHeader.classList.remove('hidden');
+        miniBadgeHeader.classList.add('inline-flex');
+      });
+
+      window.addEventListener('resize', () => {
+        if (!celebrationModal.classList.contains('hidden')) {
+          confettiCanvas.width = window.innerWidth;
+          confettiCanvas.height = window.innerHeight;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
